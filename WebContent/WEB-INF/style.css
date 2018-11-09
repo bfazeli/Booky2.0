@@ -22,11 +22,15 @@ a {
 }
 
 #profileImg {
-	float: left;
 	width: 150px;
 	height: 150px;
 	border: 1px solid black;
-}@CHARSET "UTF-8";
+}
+
+tr, td {
+	border: 1px solid black;
+	padding: 5px;
+}
 
 .creditCardForm {
     max-width: 700px;

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,16 +16,23 @@
 <a href='Checkout'>Checkout</a></p>
 <p id="menuRight">
 <a href='Profile'>Profile</a>
-</p></div>
-<br>
-
-<form action='Profile' method='post'>
-<div>
-<img id="profileImg" src="<%=request.getContextPath()%>${link}" alt="Profile Picture">
+</p>
 </div>
-<input type='file' name='imgLink'>
+
+<form style="float: left;" action='Profile' method='post'>
+<h2 style="margin-left:25px;">John Doe</h2>
+<img id="profileImg" src="${link}" alt="Profile Picture">
+<br>
+<input  type='file' name='imgLink'>
 <br>
 <input type='submit' value='Upload' name='upload'>
 </form>
+
+<div style="float:right; margin-right: 35%; margin-top: 20px;">
+<table style="border:1px solid black;">
+<tr><td>Books For Sale:</td><td>Price</td></tr>
+<tr><td></td><td></td></tr>
+</table>
+</div>
 </body>
 </html>
