@@ -12,12 +12,4 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-   <!--<servlet>
-        <servlet-name>HomePage</servlet-name>
-        <servlet-class>Booky.HomePage</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HomePage</servlet-name>
-        <url-pattern>/HomePage</url-pattern>
-    </servlet-mapping>-->
 </web-app>
