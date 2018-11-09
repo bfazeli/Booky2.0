@@ -18,6 +18,6 @@
 </p></div>
 <br>
 
-<p>Welcome to Booky, where you can buy or sell books!</p>
+<p style="margin-top: 50px">Welcome to Booky, where you can buy or sell used books for cheaper price!</p>
 </body>
 </html>
