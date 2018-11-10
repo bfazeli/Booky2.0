@@ -22,7 +22,7 @@ public class Profile extends HttpServlet {
     
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String imgLink = "/Images/SetProfile.png";
+		String imgLink = request.getContextPath() + "/Images/SetProfile.png";
 		request.setAttribute("link", imgLink);
 		
 		request.getRequestDispatcher("/WEB-INF/Profile.jsp").forward(request, response);

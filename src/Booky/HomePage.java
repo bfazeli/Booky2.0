@@ -24,7 +24,8 @@ public class HomePage extends HttpServlet {
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
+//		request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
+		System.out.println("\n\nHERRo\n\n");
 	}
 
 
