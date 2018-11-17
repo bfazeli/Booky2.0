@@ -10,9 +10,34 @@
     <link rel="stylesheet" type="text/css" href="WebContent/WEB-INF/styles.css">
     <link rel="stylesheet" type="text/css" href="WebContent/WEB-INF/demo.css">
 </head>
-
+<style><%@ include file="/WEB-INF/style.css" %></style>
 <body>
-
+	
+	<div id="menu">
+		<div id="menuLeft">
+		<a href='HomePage'>Home</a> |
+		<a href='BookListing'>Book Listing</a> | 
+		<a href='Sell'>Sell</a> |
+		<a href='Checkout'>Checkout</a>
+		</div>
+		
+		<form style='float:left;' action='BookListing' method='post'>
+		<input style='margin-left:25px; margin-top:15px;' 
+		type='text' name='search' value='Search for a book'>
+		<select>
+			<option value='All'>All</option>
+			<option value='KeyWord'>KeyWord</option>
+			<option value='Title'>Title</option>
+			<option value='Author'>Author</option>
+		</select>
+		<input type='submit' name='submit' value='Search'>
+		</form>
+		
+		<div id="menuRight">
+		<a href='Profile'>Profile</a>
+		</div>
+	</div>
+	
     <!-- The HTML for our form will go here -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
