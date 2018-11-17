@@ -13,13 +13,19 @@
 <a href='HomePage'>Home</a> |
 <a href='BookListing'>Book Listing</a> | 
 <a href='Sell'>Sell</a> |
-<a href='Checkout'>Checkout</a></p>
+<a href='Checkout'>Checkout</a>
+<form action='BookListing' method='post'>
+<input type='text' name='search' value='Search for a book'>
+<input type='submit' name='submit' value='Search'>
+</form></p>
+
 <p id="menuRight">
 <a href='Profile'>Profile</a>
 </p>
 </div>
 
-<form style="float: left;" action='Profile' method='post'>
+<div style='float:left; clear:both;'>
+<form style='action='Profile' method='post'>
 <h2 style="margin-left:25px;">John Doe</h2>
 <img id="profileImg" src="${link}" alt="Profile Picture">
 <br>
@@ -27,9 +33,10 @@
 <br>
 <input type='submit' value='Upload' name='upload'>
 </form>
+</div>
 
-<div style="float:right; margin-right: 35%; margin-top: 20px;">
-<table style="border:1px solid black;">
+<div style='float: right;'>
+<table style="border:1px solid black; float:right; margin-right:35%; margin-top:25px;'">
 <tr><td>Books For Sale:</td><td>Price</td></tr>
 <tr><td></td><td></td></tr>
 </table>

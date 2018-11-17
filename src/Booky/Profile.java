@@ -22,16 +22,23 @@ public class Profile extends HttpServlet {
     
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String imgLink = request.getContextPath() + "/Images/SetProfile.png";
-		request.setAttribute("link", imgLink);
+		String link = (String) getServletContext().getAttribute("link");
+		if (link == null) {
+			String imgLink = request.getContextPath() + "/Images/SetProfile.png";
+			request.setAttribute("link", imgLink);
+		}
+		else {
+			request.setAttribute("link", link);
+		}
 		
 		request.getRequestDispatcher("/WEB-INF/Profile.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String link = request.getParameter("upload");
-		request.setAttribute("link", link);
+		String link = request.getParameter("imgLink");
+		getServletContext().setAttribute("link", link);
 		response.sendRedirect("Profile");
+		return;
 	}
 
 }
