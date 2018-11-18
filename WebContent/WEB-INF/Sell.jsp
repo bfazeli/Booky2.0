@@ -3,8 +3,34 @@
 <head>
     <meta charset="utf-8" />
     <title>BOOKY</title>
+    <style><%@ include file="/WEB-INF/style.css" %></style>
 </head>
 <body>
+	
+	<div id="menu">
+		<div id="menuLeft">
+		<a href='HomePage'>Home</a> |
+		<a href='BookListing'>Book Listing</a> | 
+		<a href='Sell'>Sell</a> |
+		<a href='Checkout'>Checkout</a>
+		</div>
+		
+		<form style='float:left;' action='BookListing' method='post'>
+		<input style='margin-left:25px; margin-top:15px;' 
+		type='text' name='search' value='Search for a book'>
+		<select>
+			<option value='All'>All</option>
+			<option value='KeyWord'>KeyWord</option>
+			<option value='Title'>Title</option>
+			<option value='Author'>Author</option>
+		</select>
+		<input type='submit' name='submit' value='Search'>
+		</form>
+		
+		<div id="menuRight">
+		<a href='Profile'>Profile</a>
+		</div>
+	</div>
     
     <h1>Sell Your Books</h1> 
     <form>
@@ -45,8 +71,7 @@
 
 
         <input type="submit" name="submitButton" value="Submit your book">
-       <button type="button" name="back" onclick="history.back()">Back</button>
-        
+        <button type="button" name="back" onclick="history.back()">Back</button>
     </form>
 
 </body>

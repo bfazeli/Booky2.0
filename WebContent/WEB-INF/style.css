@@ -1,10 +1,12 @@
 #menuLeft {
 	float:left;
 	margin-left: 10px;
+	margin-top:15px;
 }
 
 #menuRight {
-	float: right;
+	float:right;
+	margin-top:15px;
 	margin-right: 10px;
 }
 

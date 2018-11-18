@@ -9,19 +9,28 @@
 
 <body>
 <div id="menu">
-<p id="menuLeft">
+<div id="menuLeft">
 <a href='HomePage'>Home</a> |
 <a href='BookListing'>Book Listing</a> | 
 <a href='Sell'>Sell</a> |
 <a href='Checkout'>Checkout</a>
-<form action='BookListing' method='post'>
-<input type='text' name='search' value='Search for a book'>
-<input type='submit' name='submit' value='Search'>
-</form></p>
+</div>
 
-<p id="menuRight">
+<form style='float:left;' action='BookListing' method='post'>
+<input style='margin-left:25px; margin-top:15px;' 
+type='text' name='search' value='Search for a book'>
+<select>
+	<option value='All'>All</option>
+	<option value='KeyWord'>KeyWord</option>
+	<option value='Title'>Title</option>
+	<option value='Author'>Author</option>
+</select>
+<input type='submit' name='submit' value='Search'>
+</form>
+
+<div id="menuRight">
 <a href='Profile'>Profile</a>
-</p>
+</div>
 </div>
 
 <div style='float:left; clear:both;'>
@@ -37,8 +46,8 @@
 
 <div style='float: right;'>
 <table style="border:1px solid black; float:right; margin-right:35%; margin-top:25px;'">
-<tr><td>Books For Sale:</td><td>Price</td></tr>
-<tr><td></td><td></td></tr>
+<tr><td>Books For Sale</td><td>Price</td></tr>
+
 </table>
 </div>
 </body>

@@ -20,6 +20,12 @@
 
 <form action='BookListing' method='post'>
 <input type='text' name='search' value='Search for a book'>
+<select>
+	<option value='All'>All</option>
+	<option value='KeyWord'>KeyWord</option>
+	<option value='Title'>Title</option>
+	<option value='Author'>Author</option>
+</select>
 <input type='submit' name='submit' value='Search'>
 </form>
 </body>
