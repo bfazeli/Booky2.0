@@ -45,6 +45,8 @@
 
 
         <input type="submit" name="submitButton" value="Submit your book">
+       <button type="button" name="back" onclick="history.back()">Back</button>
+        
     </form>
 
 </body>
