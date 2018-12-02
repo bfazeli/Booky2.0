@@ -20,7 +20,8 @@ public class BookListing extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		request.setAttribute("hi", "not home");
+		request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
 	}
 
 }
