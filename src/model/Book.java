@@ -6,11 +6,12 @@ public class Book {
 	private String bookID;
 	private String genre;
 	private String condition;
+	private String isbn;
+	private String description;
 	private ArrayList<String> sellers;
 	private ArrayList<String> purchasers;
-	private long isbn;
-	private String description;
-	public Book(long isbn, ArrayList<String> sellers, ArrayList<String> purchasers,String title, 
+	
+	public Book(String isbn, ArrayList<String> sellers, ArrayList<String> purchasers,String title, 
 			String author, String genre, String condition,String description, String bookID){
 		this.title = title;
 		this.condition = condition;
@@ -18,9 +19,9 @@ public class Book {
 		this.author = author;
 		this.genre = genre;
 		this.bookID = bookID;
+		this.isbn = isbn;
 		this.sellers = sellers;
 		this.purchasers = purchasers;
-		this.isbn = isbn;
 	}
 	public void addToSellersList(String userID) {
 		sellers.add(userID);
@@ -70,10 +71,10 @@ public class Book {
 	public void setPurchasers(ArrayList<String> purchasers) {
 		this.purchasers = purchasers;
 	}
-	public long getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
-	public void setIsbn(long isbn) {
+	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
 	public String getDescription() {

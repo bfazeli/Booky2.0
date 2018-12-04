@@ -17,8 +17,8 @@
 
 <form style='float:left;' action='BookListing' method='post'>
 <input style='margin-left:25px; margin-top:15px;' 
-type='text' name='search' value='Search for a book'>
-<select>
+type='text' name='search' value='' placeholder = "Search for a book">
+<select name='filter'>
 	<option value='All'>All</option>
 	<option value='KeyWord'>KeyWord</option>
 	<option value='Title'>Title</option>
