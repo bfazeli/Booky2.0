@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="/Users/bijanfazeli/Desktop/Coding/CSULA/Advanced Web Browsing/EclipseWorkspace/apache-tomcat-8.5.35/lib/servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/bijanfazeli/Desktop/org.json-chargebee-1.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

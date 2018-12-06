@@ -1,8 +1,11 @@
 package Booky;
 
+import org.json.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Book;
-
 
 @WebServlet("/HomePage")
 public class HomePage extends HttpServlet {
@@ -47,9 +49,11 @@ public class HomePage extends HttpServlet {
 		
 		System.out.println(id);
 		
+		
+		
 		new Thread(() -> {
 			try {
-				request.setAttribute("book", retrieveBook("e24e0850-f771-11e8-8b08-ad74be2903c1"));
+				request.setAttribute("book", createBook("e24e0850-f771-11e8-8b08-ad74be2903c1"));
 				request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
 			} catch (IOException | ServletException e) {
 				// TODO Auto-generated catch block
@@ -63,9 +67,6 @@ public class HomePage extends HttpServlet {
 			
 			// Make this asynch
 			new Thread(() -> {
-				
-				List<Book> books = retrieveBooks(text, filter);
-				request.setAttribute("books", books);
 				
 				try {
 					request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
@@ -90,30 +91,73 @@ public class HomePage extends HttpServlet {
 		
 	}
 
-
-	private Book retrieveBook(String id) throws IOException {
+	private StringBuffer createBook(String id) throws IOException {
 		// TODO Auto-generated method stub
 		System.out.println(id);
-		URL url = new URL("http://localhost:3000/book/" + id);
+		URL url = new URL("http://localhost:3000/book-create");
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("POST");
 		con.setRequestProperty("Accept", "application/json");
+		String line = null;
+		String str =  "{"
+				+ "\"title\": \"string\","
+				+ "\"author\":\"string\","
+				+ "\"bookId\":\"string\","
+				+ "\"genre\":\"string\","
+				+ "\"condition\":\"string\","
+				+ "\"isbn\":\"string\","
+				+ "\"description\":\"string\""
+				+ "}";
+		
+		con.setDoOutput(true);
+		byte[] outputInBytes = str.getBytes("UTF-8");
+		OutputStream os = con.getOutputStream();
+		os.write( outputInBytes );    
+		os.close();
+		
+		
 		
 		int responseCode = con.getResponseCode();
-		System.out.println(responseCode);
 		
-		if (responseCode == HttpURLConnection.HTTP_OK) {
+		if (responseCode == 201) {
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(con.getInputStream()));
 			StringBuffer response = new StringBuffer();
-			String line = null;
-			while((line = in.readLine()) != null) {
+			System.out.println(in);
+			
+			
+			
+			while((line= in.readLine()) != null) {
+				System.out.println(line);
 				response.append(line);
 			} in.close();
 			
-			System.out.println(response);
-			String hi = "hello,there";
-			String result = response.toString();
-			 result.split(",");
+
+			try {
+				JSONObject jObj = new JSONObject(response.toString());
+				JSONArray j = (jObj).names();
+				
+				System.out.println(j);
+				
+				for(int i = 0; i < j.length(); i++) {
+					
+					System.out.println(jObj.get(j.getString(i)));
+				}
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			try {
+//				Object obj = parser.parse(response.toString());
+//				JSONArray array = (JSONArray) obj;
+//				System.out.println(array.get(1));
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			System.out.println("hello");
 			
 			//response.substring(response.indexOf("condition") + 1, response.indexOf("author"))
 		}
@@ -123,14 +167,6 @@ public class HomePage extends HttpServlet {
 		
 		return null;
 	}
-
-	private List<Book> retrieveBooks(String text, String filter) {
-		// TODO Auto-generated method stub
-		// URL url = new URL("https://")
-		
-		return null;
-	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
@@ -163,7 +199,7 @@ public class HomePage extends HttpServlet {
 			System.out.println("JSON " + response.toString());
 		}
 		else {
-			System.out.println("Rip");
+			// System.out.println("Rip");
 		}
 		
 	}
