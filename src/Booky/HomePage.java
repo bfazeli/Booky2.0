@@ -1,17 +1,8 @@
 package Booky;
 
-import org.json.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,15 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.API;
 import model.Book;
 
-@WebServlet("/HomePage")
+@WebServlet(urlPatterns = "/HomePage", loadOnStartup = 2)
 public class HomePage extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	public static Map<String, String> apiDictionary = new HashMap<String, String>();
-	private final String app_id = "87370f42";
-	private final String api_key = "69daf2ab9761c11273dd3bb264babec9";
+	private static final API api = new API();
        
     public HomePage() {
         super();
@@ -36,172 +26,145 @@ public class HomePage extends HttpServlet {
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        HomePage.apiDictionary.putIfAbsent("api_key", api_key);
-        HomePage.apiDictionary.putIfAbsent("app_id", app_id);
+        
+        // Created a local, empty array list of type Guest Book Entry
+        	ArrayList<Book> books = new ArrayList<Book>();
+        	ArrayList<Book>	 results = new ArrayList<Book>();
+        	
+        	// Pre-populate my guest book with some entries
+      		books.add( new Book("0810993139", "Diary of a Wimpy Kid", "Jeff Kinney", "fiction", "used",
+      				"Diary of a Wimpy Kid is a satirical realistic fiction comedy novel for "
+      				+ "children and teenagers written and illustrated by Jeff Kinney. "
+      				+ "It is the first book in the Diary of a Wimpy Kid series. "
+      				+ "The book is about a boy named Greg Heffley and his struggles to fit in as he begins middle school.", 31.20));
+      		books.add( new Book("0590930028", "No, David!", "David Shannon", "fiction", "used", 
+      				"Over fifteen years after its initial publication, NO, DAVID! "
+      				+ "remains a perennial household favorite, delighting children, parents, and teachers alike. "
+      				+ "David is a beloved character, whose unabashed good humor, mischievous smile, and laughter-inducing "
+      				+ "antics underline the love parents have for their children--even when they misbehave.", 83.13));
+      		books.add( new Book("1328869334", "George Orwell", "Science Fiction", "science-fiction", "used", 
+      				"In 1984, London is a grim city in the totalitarian state of Oceania where Big Brother is always "
+      				+ "watching you and the Thought Police can practically read your mind. "
+      				+ "Winston Smith is a man in grave danger for the simple reason that his memory still functions. "
+      				+ "Drawn into a forbidden love affair, Winston finds the courage to join a secret revolutionary "
+      				+ "organization called The Brotherhood, dedicated to the destruction of the Party. Together "
+      				+ "with his beloved Julia, he hazards his life in a deadly match against the powers that be.", 42.61));
+       	books.add( new Book("9780451526342", "Animal Farm", "George Orwell", "Fantasy", "used", "A farm is taken over "
+       			+ "by its overworked, mistreated animals. With flaming idealism and stirring slogans, "
+       			+ "they set out to create a paradise of progress, justice, and equality. "
+       			+ "Thus the stage is set for one of the most telling satiric fables ever penned—a razor-edged "
+       			+ "fairy tale for grown-ups that records the evolution from revolution against tyranny "
+       			+ "to a totalitarianism just as terrible.", 34.52));
+       	
+       	for(Book book : books) {
+       		try {
+				results.add(api.createBook(book, "123"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+       	}
+        	getServletContext().setAttribute("books", books);
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// HomePage.getSynonyms("fire");
+		String link = (String) getServletContext().getAttribute("link");
+		if (link == null) {
+			String imgLink = request.getContextPath() + "/Images/SetProfile.png";
+			getServletContext().setAttribute("link", imgLink);
+		}
 		
+		String firstName = (String) getServletContext().getAttribute("firstName");
+		String lastName = (String) getServletContext().getAttribute("lastName");
+		if (firstName == null || lastName == null) {
+			firstName = "John";
+			lastName = "Doe";
+			request.setAttribute("firstName", firstName);
+			request.setAttribute("lastName", lastName);
+			
+			getServletContext().setAttribute("firstName", firstName);
+			getServletContext().setAttribute("lastName", lastName);
+		}
 		
-		final String text = request.getParameter("search");
-		final String id = request.getParameter("id");
+		String email = (String) getServletContext().getAttribute("email");
+		if (email == null) {
+			email = "HelloWorld@gmail.com";
+			getServletContext().setAttribute("email", email);
+		}
 		
-		System.out.println(id);
+		String address = (String) getServletContext().getAttribute("address");
+		if (address == null) {
+			address = "5151 State University Dr, Los Angeles, CA 90032";
+			getServletContext().setAttribute("address", address);
+		}
 		
+		String phoneNumber = (String) getServletContext().getAttribute("phoneNumber");
+		if (phoneNumber == null) {
+			phoneNumber = "(123) - 456 - 7890";
+			getServletContext().setAttribute("phoneNumber", phoneNumber);
+		}
 		
-		
-		new Thread(() -> {
-			try {
-				request.setAttribute("book", createBook("e24e0850-f771-11e8-8b08-ad74be2903c1"));
-				request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
-			} catch (IOException | ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if (request.getParameter("filter") != null) {
+			String filter = request.getParameter("filter");
+			String text = request.getParameter("search").toLowerCase();
+			ArrayList<Book> result = new ArrayList<Book>();
+			
+			System.out.println(filter);
+			
+			if (text.trim().length() == 0) {
+				request.setAttribute("books", api.retrieveAllBooks());
 			}
-		}).start();
-		
-		
-		if (text != null) {
-			final String filter = request.getParameter("filter");
-			
-			// Make this asynch
-			new Thread(() -> {
-				
-				try {
-					request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
-				} catch (ServletException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			else {
+				switch(filter) {
+					case "keyword":
+						request.setAttribute("books", api.retrieveBookByKeyword(text));
+						break;
+					case "title":
+						request.setAttribute("books", api.retrieveBookByTitle(text));
+						break;
+					case "all":
+						request.setAttribute("books", api.retrieveBookByTheme(text));
+						break;
+					case "author":
+						request.setAttribute("books", api.retrieveBookByAuthor(text));
+						break;
+					default:
+						request.setAttribute("books", api.retrieveAllBooks());
+						break;
 				}
-			}).start();
+			}
 			
-		}
-		else if (id != null) {
-			
-		}
-		else {
-			request.setAttribute("loading", "true");
-			request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
+			if (!result.isEmpty()) {
+				getServletContext().setAttribute("books", result);
+			}
 		}
 		
-		
+		request.getRequestDispatcher("/WEB-INF/HomePage.jsp").forward(request, response);
 	}
 
-	private StringBuffer createBook(String id) throws IOException {
-		// TODO Auto-generated method stub
-		System.out.println(id);
-		URL url = new URL("http://localhost:3000/book-create");
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestMethod("POST");
-		con.setRequestProperty("Accept", "application/json");
-		String line = null;
-		String str =  "{"
-				+ "\"title\": \"string\","
-				+ "\"author\":\"string\","
-				+ "\"bookId\":\"string\","
-				+ "\"genre\":\"string\","
-				+ "\"condition\":\"string\","
-				+ "\"isbn\":\"string\","
-				+ "\"description\":\"string\""
-				+ "}";
-		
-		con.setDoOutput(true);
-		byte[] outputInBytes = str.getBytes("UTF-8");
-		OutputStream os = con.getOutputStream();
-		os.write( outputInBytes );    
-		os.close();
-		
-		
-		
-		int responseCode = con.getResponseCode();
-		
-		if (responseCode == 201) {
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
-			StringBuffer response = new StringBuffer();
-			System.out.println(in);
-			
-			
-			
-			while((line= in.readLine()) != null) {
-				System.out.println(line);
-				response.append(line);
-			} in.close();
-			
 
-			try {
-				JSONObject jObj = new JSONObject(response.toString());
-				JSONArray j = (jObj).names();
-				
-				System.out.println(j);
-				
-				for(int i = 0; i < j.length(); i++) {
-					
-					System.out.println(jObj.get(j.getString(i)));
-				}
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//			try {
-//				Object obj = parser.parse(response.toString());
-//				JSONArray array = (JSONArray) obj;
-//				System.out.println(array.get(1));
-//			} catch (ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
-			System.out.println("hello");
-			
-			//response.substring(response.indexOf("condition") + 1, response.indexOf("author"))
-		}
-		else {
-			System.out.println("RIP");
-		}
-		
-		return null;
-	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-	}
-	
-	public static void getSynonyms(String syn) throws IOException {
 		
-		URL url = new URL("https://od-api.oxforddictionaries.com:443/api/v1/entries/en/ace/synonyms");
-		String line = null;
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//		con.setRequestMethod("GET");
-		
-//		con.setRequestMethod("GET");
-		con.setRequestProperty("Accept","application/json");
-		con.setRequestProperty("app_id", "87370f42");
-		con.setRequestProperty("app_key", "69daf2ab9761c11273dd3bb264babec9");
-		
-		int responseCode = con.getResponseCode();
-		System.out.println(con.getResponseMessage());
-		
-		if (responseCode == HttpURLConnection.HTTP_OK) {
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
-			StringBuffer response = new StringBuffer();
-			while((line = in.readLine()) != null) {
-				response.append(line);
-			} 
+		if (request.getParameter("bookAddedToCart") != null) {
+			String bookid = request.getParameter("bookAddedToCart");
+			ArrayList<Book> books = (ArrayList<Book>) getServletContext().getAttribute("books");
+			int id = 0;
+			for (int i = 0; i < books.size(); i++) {
+				if (bookid.equals(books.get(i).getBookID())) {
+					id = i;
+				}
+			}
 			
-			in.close();
+			ArrayList<Book> cart = new ArrayList<Book>();
+			cart.add(books.get(id));
 			
-			System.out.println("JSON " + response.toString());
-		}
-		else {
-			// System.out.println("Rip");
+			getServletContext().setAttribute("cart", cart);
 		}
 		
+		
+		response.sendRedirect("HomePage");
+		return;
 	}
 
 }

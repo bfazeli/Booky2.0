@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.API;
+import model.Book;
 
 @WebServlet("/Sell")
 public class Sell extends HttpServlet  {
@@ -23,49 +25,35 @@ public class Sell extends HttpServlet  {
 		request.getRequestDispatcher("/WEB-INF/Sell.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("submitButton") != null) {
-			
-			String name = request.getParameter("name");
-			String author = request.getParameter("author");
-			int ISBN = Integer.parseInt(request.getParameter("ISBN"));
-			String genre = request.getParameter("genre");
-			String description = request.getParameter("description");
-			
-			boolean isValidName = name != null && name.trim().length() > 0;
-			boolean isValidAuthor = author != null && author.trim().length() > 0;
-			boolean isValidISBN = ISBN != 0;
-			boolean isValidGenre = genre != null && genre.trim().length() > 0;
-			boolean isValidDescription = description != null && description.trim().length() > 0;
-			
-			
-			if (isValidName && isValidAuthor && isValidISBN && isValidGenre && isValidDescription) {
-				ArrayList<AddBooks> addBooks = (ArrayList<AddBooks>) getServletContext().getAttribute("addBooks");
-				
-				addBooks.add(new AddBooks(name, author, ISBN, genre, description));
-			} 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {			
+		
+		String name = request.getParameter("newBookName");
+		String author = request.getParameter("authorName");
+		String ISBN = request.getParameter("isbnNumber");
+		String genre = request.getParameter("genreName");
+		String description = request.getParameter("bookDescription");
+		String price = request.getParameter("price");
+		String condition = request.getParameter("condition");
+		
+		if (name.isEmpty() || author.isEmpty() || ISBN.isEmpty() || genre.isEmpty() || description.isEmpty() || price.isEmpty()) {
+			response.sendRedirect("Sell");
+			return;
+		} 
 			else {
+				double p =  Double.parseDouble(price);
 				
-				// Problem with the name?
-				if (!isValidName)
-					request.setAttribute("nameError", "Invalid Note");
-			
-				if (!isValidAuthor)
-					request.setAttribute("messageError", "Invalid Message");
-				if (!isValidISBN)
-					request.setAttribute("messageError", "Invalid ISBN");
-				if (!isValidGenre)
-					request.setAttribute("messageError", "Invalid Genre");
-				if (!isValidDescription)
-					request.setAttribute("messageError", "Invalid Description");
+				ArrayList<Book> myBooks = new ArrayList<Book>();
+				ArrayList<Book> books = (ArrayList<Book>) getServletContext().getAttribute("books");
+				Book b = new Book(ISBN, name, author, genre, condition, description, p);
+				books.add(b);
+				myBooks.add(b);
 				
-				//response.sendRedirect("BookListing");
+				getServletContext().setAttribute("myBooks", myBooks);
+				getServletContext().setAttribute("books", books);
 				
-				doGet(request, response);
+				response.sendRedirect("HomePage");
 				return;
 			}
-	
-		}
 
 	}
 }

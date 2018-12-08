@@ -8,26 +8,32 @@ public class Book {
 	private String condition;
 	private String isbn;
 	private String description;
+	private double price;
 	private ArrayList<String> sellers;
 	private ArrayList<String> purchasers;
-	
-	public Book(String isbn, ArrayList<String> sellers, ArrayList<String> purchasers,String title, 
-			String author, String genre, String condition,String description, String bookID){
+	public Book(String isbn, String title, String author,String genre, 
+			String condition, String description, double price){
 		this.title = title;
 		this.condition = condition;
 		this.description = description;
 		this.author = author;
 		this.genre = genre;
-		this.bookID = bookID;
 		this.isbn = isbn;
-		this.sellers = sellers;
-		this.purchasers = purchasers;
+		this.price = price;
+		this.purchasers = new ArrayList<String>();
+		this.sellers = new ArrayList<String>();
 	}
 	public void addToSellersList(String userID) {
 		sellers.add(userID);
 	}
 	public void addToPurchasersList(String userID) {
 		purchasers.add(userID);
+	}
+	public double getPrice() {
+		return this.price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	public String getTitle() {
 		return title;

@@ -6,14 +6,13 @@ public class User {
 	private String userID;
 	private String username;
 	private String password;
-	private ArrayList<String> soldBooks;
-	private ArrayList<String> purchasedBooks;
 	private String email;
 	private String address;
 	private String phoneNumber;
-	public User(ArrayList<String> purchasedBooks, ArrayList<String> soldBooks, String firstName, String lastName,
-			String username, String password,String email, String address,
-			String phoneNumber, String userID) {
+	private ArrayList<String> soldBooks;
+	private ArrayList<String> purchasedBooks;
+	public User(String firstName, String lastName, String username,
+			String password, String email,String address, String phoneNumber) {
 		this.address = address;
 		this.email = email;
 		this.firstName = firstName;
@@ -21,9 +20,14 @@ public class User {
 		this.password = password;
 		this.username = username;
 		this.phoneNumber = phoneNumber;
-		this.soldBooks = soldBooks;
-		this.purchasedBooks = purchasedBooks;
-		this.userID = userID;
+		this.soldBooks = new ArrayList<String>();
+		this.purchasedBooks = new ArrayList<String>();
+	}
+	public void addToSoldBooksList(String bookID) {
+		soldBooks.add(bookID);
+	}
+	public void addToPurchasedBooksList(String bookID) {
+		purchasedBooks.add(bookID);
 	}
 	public String getFirstName() {
 		return firstName;
