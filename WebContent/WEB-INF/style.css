@@ -23,6 +23,12 @@ a {
     float:top;
 }
 
+#profileImg2 {
+	 width: 25px;
+    height: 25px;
+    border: 1px solid black;
+}
+
 #profileImg {
     width: 150px;
     height: 150px;

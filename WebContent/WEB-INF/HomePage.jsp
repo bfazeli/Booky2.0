@@ -68,7 +68,7 @@ type='text' name='search' value='' placeholder="Search for a book">
 <p>${alert}</p>
 
 <table>
-<tr><th>Title</th><th>Author</th><th>Genre</th><th>Condition</th><th>Description</th></tr>
+<tr><th>Title</th><th>Author</th><th>Genre</th><th>Condition</th><th>Description</th><th>Action</th></tr>
 <c:forEach items="${books}" var="b">
     <tr>
         <td>${b.getTitle()}</td>
